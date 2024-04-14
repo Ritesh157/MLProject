@@ -9,6 +9,9 @@ from dataclasses import dataclass
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
 
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
+
 @dataclass
 class DataIngestionConfig:
     train_data_path:str=os.path.join('artifacts', 'train.csv')
@@ -23,7 +26,7 @@ class DataIngestion:
     def __init__(self):
         self.ingestion_config=DataIngestionConfig()
         # ingestion_config variable consist of above three path.
-        # when we call ataIngestionConfig(), then above three path get save in ingestion_config variable 
+        # when we call DataIngestionConfig(), then above three path get save in ingestion_config variable 
     
     def initiate_data_ingestion(self):
         logging.info("Entered the data ingestion method or component")
@@ -60,4 +63,7 @@ if __name__=="__main__":
     train_data, test_data = obj.initiate_data_ingestion()
 
     data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+    train_arr, test_arr,_ = data_transformation.initiate_data_transformation(train_data, test_data)
+
+    modeltrainer = ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr, test_arr)) # this will give r2 score.
